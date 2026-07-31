@@ -297,32 +297,33 @@ section { padding: 20px 24px 4px; }
 // ───────────────── 메뉴 DB ─────────────────
 const MENUS = [
   {name:'김치찌개', tags:['국물','매운맛','고기','밥'], weather:['rain','cold'], mood:['stress','blue','calm'], drink:['soju'], why:'뜨끈하고 얼큰한 국물이 필요한 날'},
-  {name:'삼겹살', tags:['고기'], weather:['cold'], mood:['happy','stress'], drink:['soju','beer'], why:'구우면서 먹는 재미까지 있는 만능 메뉴'},
+  {name:'삼겹살', hearty:true, tags:['고기'], weather:['cold'], mood:['happy','stress'], drink:['soju','beer'], why:'구우면서 먹는 재미까지 있는 만능 메뉴'},
   {name:'파전 + 동동주 안주상', tags:['튀김','해산물'], weather:['rain','humid'], mood:['blue','calm'], drink:['makgeolli'], why:'빗소리엔 역시 전 부치는 소리'},
   {name:'칼국수', tags:['면','국물','해산물'], weather:['rain','cold'], mood:['tired','blue'], drink:[], why:'속을 부드럽게 달래주는 따뜻한 한 그릇'},
   {name:'냉면', tags:['면','국물'], weather:['hot'], mood:['tired','calm'], drink:[], why:'더위를 한 방에 식혀줄 살얼음 육수'},
   {name:'물회', tags:['해산물','국물','매운맛'], weather:['hot','humid'], mood:['happy','tired'], drink:['soju'], why:'덥고 축 처질 때 새콤하게 리셋'},
-  {name:'치킨', tags:['튀김','고기'], weather:[], mood:['happy','stress'], drink:['beer','highball'], why:'실패 없는 국민 메뉴, 오늘도 정답'},
-  {name:'마라탕', tags:['국물','매운맛','면','고기'], weather:['cold'], mood:['stress'], drink:[], why:'스트레스는 얼얼함으로 태워버리기'},
-  {name:'떡볶이 + 튀김', tags:['매운맛','튀김'], weather:['rain'], mood:['stress','blue'], drink:[], why:'매콤달콤은 기분 회복 특효약'},
+  {name:'치킨', hearty:true, tags:['튀김','고기'], weather:[], mood:['happy','stress'], drink:['beer','highball'], why:'실패 없는 국민 메뉴, 오늘도 정답'},
+  {name:'마라탕', hearty:true, tags:['국물','매운맛','면','고기'], weather:['cold'], mood:['stress'], drink:[], why:'스트레스는 얼얼함으로 태워버리기'},
+  {name:'떡볶이 + 튀김', hearty:true, tags:['매운맛','튀김'], weather:['rain'], mood:['stress','blue'], drink:[], why:'매콤달콤은 기분 회복 특효약'},
   {name:'초밥', tags:['해산물','밥'], weather:['hot'], mood:['happy','calm'], drink:['white','sake','highball'], why:'조금 대접받고 싶은 날의 선택'},
-  {name:'파스타', tags:['면'], weather:[], mood:['happy','calm','blue'], drink:['white','red'], why:'와인 한 잔과 함께 분위기 내기 좋은 메뉴'},
+  {name:'파스타', hearty:true, tags:['면'], weather:[], mood:['happy','calm','blue'], drink:['white','red'], why:'와인 한 잔과 함께 분위기 내기 좋은 메뉴'},
   {name:'국밥', tags:['국물','밥','고기'], weather:['cold','rain'], mood:['tired','calm'], drink:['soju'], why:'든든하게 속부터 채우는 정직한 한 끼'},
   {name:'샐러드 보울', tags:[], weather:['hot','humid'], mood:['calm','tired'], drink:[], why:'속이 가벼워야 몸도 가벼운 날'},
-  {name:'곱창', tags:['고기'], weather:['cold'], mood:['stress','happy'], drink:['soju'], why:'기름진 위로가 필요한 날의 야장 감성'},
-  {name:'돈카츠', tags:['튀김','고기','밥'], weather:[], mood:['happy','tired'], drink:['beer','highball'], why:'바삭함은 언제나 옳다'},
-  {name:'쌀국수', tags:['면','국물','고기'], weather:['rain','cold'], mood:['tired','blue'], drink:[], why:'따뜻하지만 부담 없는 해장 겸 힐링'},
-  {name:'감바스 + 바게트', tags:['해산물','튀김'], weather:[], mood:['happy','calm'], drink:['white','highball'], why:'홈술 분위기 제대로 내는 안주 겸 식사'},
+  {name:'곱창', hearty:true, tags:['고기'], weather:['cold'], mood:['stress','happy'], drink:['soju'], why:'기름진 위로가 필요한 날의 야장 감성'},
+  {name:'돈카츠', hearty:true, tags:['튀김','고기','밥'], weather:[], mood:['happy','tired'], drink:['beer','highball'], why:'바삭함은 언제나 옳다'},
+  {name:'쌀국수', tags:['면','국물','고기'], weather:['cold'], mood:['tired','blue'], drink:[], why:'따뜻하지만 부담 없는 해장 겸 힐링'},
+  {name:'감바스 + 바게트', hearty:true, tags:['해산물','튀김'], weather:[], mood:['happy','calm'], drink:['white','highball'], why:'홈술 분위기 제대로 내는 안주 겸 식사'},
   {name:'비빔국수', tags:['면','매운맛'], weather:['hot','humid'], mood:['stress','happy'], drink:['makgeolli'], why:'입맛 없을 때 확 당기는 매콤새콤'},
   {name:'닭볶음탕', tags:['국물','매운맛','고기'], weather:['rain','cold'], mood:['stress','blue'], drink:['soju'], why:'진한 국물에 밥 비벼 먹는 맛'},
-  {name:'피자', tags:['튀김'], weather:[], mood:['happy','blue'], drink:['beer','red','highball'], why:'고민 없이 시켜서 편하게 즐기기'},
+  {name:'피자', hearty:true, tags:['튀김'], weather:[], mood:['happy','blue'], drink:['beer','red','highball'], why:'고민 없이 시켜서 편하게 즐기기'},
   {name:'보쌈', tags:['고기'], weather:['cold','rain'], mood:['calm','tired'], drink:['makgeolli','soju'], why:'담백한 수육에 김치 한 점의 완성형 조합'},
   {name:'우동', tags:['면','국물'], weather:['rain','cold'], mood:['blue','calm','tired'], drink:['sake','highball'], why:'따뜻한 국물이 조용히 위로해주는 맛'},
   {name:'회 + 매운탕', tags:['해산물','국물','매운맛'], weather:[], mood:['happy','calm'], drink:['soju','sake'], why:'신선한 회로 시작해 얼큰하게 마무리'},
-  {name:'제육볶음', tags:['고기','매운맛','밥'], weather:[], mood:['stress','tired'], drink:['soju','beer'], why:'밥도둑 앞에서는 고민이 사라진다'},
+  {name:'제육볶음', hearty:true, tags:['고기','매운맛','밥'], weather:[], mood:['stress','tired'], drink:['soju','beer'], why:'밥도둑 앞에서는 고민이 사라진다'},
   {name:'콩국수', tags:['면'], weather:['hot','humid'], mood:['calm','tired'], drink:[], why:'고소하고 시원하게 여름을 버티는 법'},
-  {name:'스테이크', tags:['고기'], weather:[], mood:['happy','calm'], drink:['red','whisky'], why:'오늘 하루를 근사하게 마무리하고 싶은 날'},
+  {name:'스테이크', hearty:true, tags:['고기'], weather:[], mood:['happy','calm'], drink:['red','whisky'], why:'오늘 하루를 근사하게 마무리하고 싶은 날'},
   {name:'연어덮밥', tags:['해산물','밥'], weather:['hot'], mood:['calm','tired'], drink:['sake','white','highball'], why:'부드럽고 고소하게 기분 전환'},
+  {name:'햄버거', hearty:true, tags:['튀김','고기'], weather:[], mood:['happy','stress','tired'], drink:['beer'], why:'두 손으로 들고 크게 한입, 즉효성 행복'},
 ];
 
 const DRINK_LABEL = {none:'', soju:'소주', beer:'맥주', makgeolli:'막걸리', white:'화이트와인', red:'레드와인', sake:'사케', whisky:'위스키', highball:'하이볼'};
@@ -444,6 +445,8 @@ function recommend() {
       if (w.cold && m.weather.includes('hot')) s -= 2;
     }
     if (state.mood && m.mood.includes(state.mood)) s += 2.5;
+    // 기분이 다운된 날엔 든든한 고칼로리 메뉴 우대
+    if (['tired','stress','blue'].includes(state.mood) && m.hearty) s += 2;
     if (state.drink !== 'none') {
       if (m.drink.includes(state.drink)) s += 3;
       else if (m.drink.length === 0) s -= 1;
@@ -469,7 +472,8 @@ function reasonText(m) {
   }
   const moodMap = {happy:'신난 기분', tired:'피곤한 몸', stress:'쌓인 스트레스', blue:'울적한 마음', calm:'평온한 하루'};
   if (state.mood && m.mood.includes(state.mood)) parts.push(moodMap[state.mood]);
-  const prefix = parts.length ? `${parts.join('과 ')}까지 고려했어요. ` : '';
+  let prefix = parts.length ? `${parts.join('과 ')}까지 고려했어요. ` : '';
+  if (['tired','stress','blue'].includes(state.mood) && m.hearty) prefix += '이런 날엔 든든하게 먹어야죠. ';
   return prefix + m.why + '!';
 }
 
