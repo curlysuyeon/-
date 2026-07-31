@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>오늘의 메뉴</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Jua&family=Gowun+Dodum&display=swap');
+
+:root {
+  --pink-bg: #ffe3ef;
+  --pink-soft: #fff5fa;
+  --pink: #ffb7d5;
+  --pink-deep: #f272a8;
+  --blue: #aee1f9;
+  --lavender: #e3d9ff;
+  --cream: #fffdf6;
+  --ink: #7a4a5e;
+  --red: #ef5d8f;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'Gowun Dodum', sans-serif;
+  background: var(--pink-bg);
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(255,255,255,.55) 0 8px, transparent 9px),
+    radial-gradient(circle at 70% 60%, rgba(255,255,255,.55) 0 6px, transparent 7px),
+    radial-gradient(circle at 45% 85%, rgba(255,255,255,.5) 0 7px, transparent 8px),
+    radial-gradient(circle at 85% 15%, rgba(255,255,255,.5) 0 5px, transparent 6px);
+  background-size: 260px 260px;
+  color: var(--ink);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 24px 12px 60px;
+}
+
+.sheet {
+  width: 100%;
+  max-width: 460px;
+  background: var(--pink-soft);
+  border: 3px solid var(--pink);
+  border-radius: 28px;
+  box-shadow: 0 12px 32px rgba(242,114,168,.25);
+  overflow: hidden;
+}
+
+/* ── 헤더 ── */
+header {
+  padding: 26px 24px 16px;
+  text-align: center;
+  background: linear-gradient(180deg, #ffd0e4, var(--pink-soft));
+  position: relative;
+}
+.ribbon {
+  font-size: 1.6rem;
+  display:block;
+  margin-bottom: 2px;
+}
+h1 {
+  font-family: 'Jua', sans-serif;
+  font-size: 2.1rem;
+  color: var(--pink-deep);
+  letter-spacing: .03em;
+  text-shadow: 2px 2px 0 #fff;
+}
+h1 small {
+  display:block; font-family:'Gowun Dodum'; font-size:.7rem;
+  color:#c489a2; letter-spacing:.3em; margin-bottom:4px; font-weight:400;
+}
+.date-chip {
+  display:inline-block; margin-top:8px;
+  background:#fff; border:2px dashed var(--pink);
+  border-radius:999px; padding: 4px 16px;
+  font-size:.75rem; color:#b0708c;
+}
+
+/* ── 날씨 바 ── */
+.weather {
+  display:flex; margin: 0 18px;
+  background: #fff;
+  border: 2px solid var(--blue);
+  border-radius: 18px;
+  overflow:hidden;
+}
+.weather div {
+  flex:1; text-align:center; padding: 12px 4px;
+  border-right: 2px dotted #d5edfb;
+}
+.weather div:last-child { border-right:none; }
+.weather .val { font-family:'Jua'; font-size:1.2rem; color:#5aa8d6; }
+.weather .lab { font-size:.68rem; color:#93bdd6; margin-top:2px; letter-spacing:.08em; }
+.loc-note { font-size:.68rem; color:#c489a2; text-align:center; padding:8px 0 0; }
+
+/* ── 섹션 ── */
+section { padding: 20px 24px 4px; }
+.q { display:flex; align-items:baseline; gap:8px; margin-bottom:12px; }
+.q .mark { font-size:1rem; }
+.q .txt { font-family:'Jua'; font-size:1.05rem; color:var(--pink-deep); }
+.q .sub { font-size:.72rem; color:#c489a2; }
+
+.chips { display:flex; flex-wrap:wrap; gap:8px; }
+.chip {
+  border: 2px solid var(--pink);
+  background: #fff;
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 8px 15px;
+  font-size:.85rem;
+  font-family:'Gowun Dodum';
+  cursor:pointer;
+  transition: background .15s, color .15s, transform .1s;
+  box-shadow: 0 2px 0 #ffd0e4;
+}
+.chip:active { transform: scale(.95); }
+.chip:focus-visible { outline: 3px solid var(--pink-deep); outline-offset: 2px; }
+.chip.on {
+  background: var(--pink-deep); border-color: var(--pink-deep);
+  color:#fff; box-shadow: 0 2px 0 #d1548a;
+}
+.chip.ex.on {
+  background: var(--lavender); border-color:#b9a5ee; color:#6d55a8;
+  text-decoration: line-through; box-shadow: 0 2px 0 #cfc0f2;
+}
+
+.free-ex { margin-top:10px; display:flex; gap:8px; }
+.free-ex input {
+  flex:1; border:2px solid var(--pink); border-radius:14px;
+  background:#fff; padding:9px 12px; font-size:.85rem; font-family:'Gowun Dodum';
+  color: var(--ink);
+}
+.free-ex input::placeholder { color:#d9a8bf; }
+.free-ex input:focus { outline:2px solid var(--pink-deep); }
+.free-ex button {
+  border:none; background:var(--pink-deep); color:#fff;
+  border-radius:14px; padding:0 16px; font-family:'Jua'; cursor:pointer; font-size:.9rem;
+  box-shadow: 0 2px 0 #d1548a;
+}
+
+/* ── 추천 버튼 ── */
+.draw-wrap { padding: 26px 24px 22px; }
+#drawBtn {
+  width:100%;
+  font-family:'Jua';
+  font-size:1.35rem; letter-spacing:.05em;
+  background: linear-gradient(180deg, #ff8fbd, var(--pink-deep));
+  color:#fff;
+  border:3px solid #fff; border-radius:999px;
+  padding: 15px;
+  cursor:pointer;
+  box-shadow: 0 5px 0 #d1548a, 0 8px 20px rgba(242,114,168,.35);
+  transition: transform .08s, box-shadow .08s;
+}
+#drawBtn:active { transform: translateY(4px); box-shadow: 0 1px 0 #d1548a; }
+
+/* ── 결과 카드 ── */
+.ticket {
+  margin: 0 18px 26px;
+  background: #fff;
+  border: 3px solid var(--pink);
+  border-radius: 22px;
+  position: relative;
+  display: none;
+  overflow: hidden;
+}
+.ticket.show { display:block; animation: pop .4s cubic-bezier(.2,1.5,.4,1); }
+@keyframes pop { from { transform: scale(.8); opacity:0; } to { transform: scale(1); opacity:1; } }
+
+.t-head {
+  text-align:center; padding: 12px 0 10px;
+  font-size:.72rem; letter-spacing:.3em; color:#fff;
+  background: var(--pink);
+  font-family:'Jua';
+}
+.t-menu {
+  font-family:'Jua'; font-size:2.2rem; text-align:center;
+  padding: 24px 16px 6px; line-height:1.15; color:var(--pink-deep);
+}
+.t-reason {
+  text-align:center; font-size:.85rem; color:#a3708a;
+  padding: 4px 24px 18px; line-height:1.6;
+}
+.t-pair {
+  border-top:2px dotted #ffd0e4;
+  text-align:center; padding: 10px 0 16px;
+  font-size:.82rem; color:#5aa8d6;
+}
+.deco-heart {
+  position:absolute; font-size:1.2rem; opacity:.5;
+}
+.dh1 { top:52px; left:16px; transform:rotate(-15deg); }
+.dh2 { top:70px; right:18px; transform:rotate(12deg); }
+
+.retry {
+  display:block; margin: 0 auto 10px; background:none; border:none;
+  color:#c489a2; font-size:.8rem; cursor:pointer;
+  text-decoration: underline; font-family:'Gowun Dodum'; padding:6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ticket.show { animation: none; }
+}
+</style>
+</head>
+<body>
+<div class="sheet">
+  <header>
+    <span class="ribbon">🎀</span>
+    <h1><small>WHAT TO EAT TODAY</small>오늘의 메뉴</h1>
+    <div class="date-chip" id="dateChip"></div>
+  </header>
+
+  <div class="weather" id="weatherBar">
+    <div><div class="val" id="wTemp">–</div><div class="lab">기온</div></div>
+    <div><div class="val" id="wHumi">–</div><div class="lab">습도</div></div>
+    <div><div class="val" id="wRain">–</div><div class="lab">강수</div></div>
+  </div>
+  <div class="loc-note" id="locNote">날씨 불러오는 중…
+    <select id="citySel" style="margin-left:6px; border:1.5px solid var(--pink); border-radius:8px; background:#fff; color:var(--ink); font-family:'Gowun Dodum'; font-size:.7rem; padding:2px 4px;">
+      <option value="auto">📍 내 위치</option>
+      <option value="37.5665,126.9780">서울</option>
+      <option value="37.4563,126.7052">인천</option>
+      <option value="37.2636,127.0286">수원</option>
+      <option value="36.3504,127.3845">대전</option>
+      <option value="35.8714,128.6014">대구</option>
+      <option value="35.1796,129.0756">부산</option>
+      <option value="35.1595,126.8526">광주</option>
+      <option value="35.5384,129.3114">울산</option>
+      <option value="33.4996,126.5312">제주</option>
+      <option value="37.8813,127.7298">춘천</option>
+      <option value="35.8242,127.1480">전주</option>
+    </select>
+  </div>
+
+  <section>
+    <div class="q"><span class="mark">💗</span><span class="txt">오늘 기분은?</span></div>
+    <div class="chips" id="moodChips">
+      <button class="chip" data-v="happy">신나요</button>
+      <button class="chip" data-v="tired">피곤해요</button>
+      <button class="chip" data-v="stress">스트레스</button>
+      <button class="chip" data-v="blue">울적해요</button>
+      <button class="chip" data-v="calm">평온해요</button>
+    </div>
+  </section>
+
+  <section>
+    <div class="q"><span class="mark">🍹</span><span class="txt">오늘 술은?</span></div>
+    <div class="chips" id="drinkChips">
+      <button class="chip on" data-v="none">안 마셔요</button>
+      <button class="chip" data-v="soju">소주</button>
+      <button class="chip" data-v="beer">맥주</button>
+      <button class="chip" data-v="makgeolli">막걸리</button>
+      <button class="chip" data-v="wine">와인·하이볼</button>
+    </div>
+  </section>
+
+  <section>
+    <div class="q"><span class="mark">🚫</span><span class="txt">오늘은 빼줘</span><span class="sub">복수 선택 가능</span></div>
+    <div class="chips" id="exChips">
+      <button class="chip ex" data-v="면">면 요리</button>
+      <button class="chip ex" data-v="국물">국물 요리</button>
+      <button class="chip ex" data-v="매운맛">매운 것</button>
+      <button class="chip ex" data-v="밥">밥 종류</button>
+      <button class="chip ex" data-v="고기">고기</button>
+      <button class="chip ex" data-v="해산물">해산물</button>
+      <button class="chip ex" data-v="튀김">튀김·기름진 것</button>
+    </div>
+    <div class="free-ex">
+      <input id="exInput" type="text" placeholder="특정 메뉴 직접 입력 (예: 김치찌개)">
+      <button id="exAdd">제외</button>
+    </div>
+    <div class="chips" id="exCustom" style="margin-top:8px;"></div>
+  </section>
+
+  <div class="draw-wrap">
+    <button id="drawBtn">🌸 메뉴 뽑기 🌸</button>
+  </div>
+
+  <div class="ticket" id="ticket">
+    <div class="t-head">♡ TODAY'S PICK ♡</div>
+    <span class="deco-heart dh1">💕</span>
+    <span class="deco-heart dh2">⭐</span>
+    <div class="t-menu" id="tMenu"></div>
+    <div class="t-reason" id="tReason"></div>
+    <div class="t-pair" id="tPair"></div>
+  </div>
+  <button class="retry" id="retryBtn" style="display:none;">다른 메뉴 다시 뽑기</button>
+</div>
+
+<script>
+// ───────────────── 메뉴 DB ─────────────────
+const MENUS = [
+  {name:'김치찌개', tags:['국물','매운맛','고기','밥'], weather:['rain','cold'], mood:['stress','blue','calm'], drink:['soju'], why:'뜨끈하고 얼큰한 국물이 필요한 날'},
+  {name:'삼겹살', tags:['고기'], weather:['cold'], mood:['happy','stress'], drink:['soju','beer'], why:'구우면서 먹는 재미까지 있는 만능 메뉴'},
+  {name:'파전 + 동동주 안주상', tags:['튀김','해산물'], weather:['rain','humid'], mood:['blue','calm'], drink:['makgeolli'], why:'빗소리엔 역시 전 부치는 소리'},
+  {name:'칼국수', tags:['면','국물','해산물'], weather:['rain','cold'], mood:['tired','blue'], drink:[], why:'속을 부드럽게 달래주는 따뜻한 한 그릇'},
+  {name:'냉면', tags:['면','국물'], weather:['hot'], mood:['tired','calm'], drink:[], why:'더위를 한 방에 식혀줄 살얼음 육수'},
+  {name:'물회', tags:['해산물','국물','매운맛'], weather:['hot','humid'], mood:['happy','tired'], drink:['soju'], why:'덥고 축 처질 때 새콤하게 리셋'},
+  {name:'치킨', tags:['튀김','고기'], weather:[], mood:['happy','stress'], drink:['beer'], why:'실패 없는 국민 메뉴, 오늘도 정답'},
+  {name:'마라탕', tags:['국물','매운맛','면','고기'], weather:['cold'], mood:['stress'], drink:[], why:'스트레스는 얼얼함으로 태워버리기'},
+  {name:'떡볶이 + 튀김', tags:['매운맛','튀김'], weather:['rain'], mood:['stress','blue'], drink:[], why:'매콤달콤은 기분 회복 특효약'},
+  {name:'초밥', tags:['해산물','밥'], weather:['hot'], mood:['happy','calm'], drink:['wine'], why:'조금 대접받고 싶은 날의 선택'},
+  {name:'파스타', tags:['면'], weather:[], mood:['happy','calm','blue'], drink:['wine'], why:'와인 한 잔과 함께 분위기 내기 좋은 메뉴'},
+  {name:'국밥', tags:['국물','밥','고기'], weather:['cold','rain'], mood:['tired','calm'], drink:['soju'], why:'든든하게 속부터 채우는 정직한 한 끼'},
+  {name:'샐러드 보울', tags:[], weather:['hot','humid'], mood:['calm','tired'], drink:[], why:'속이 가벼워야 몸도 가벼운 날'},
+  {name:'곱창', tags:['고기'], weather:['cold'], mood:['stress','happy'], drink:['soju'], why:'기름진 위로가 필요한 날의 야장 감성'},
+  {name:'돈카츠', tags:['튀김','고기','밥'], weather:[], mood:['happy','tired'], drink:['beer'], why:'바삭함은 언제나 옳다'},
+  {name:'쌀국수', tags:['면','국물','고기'], weather:['rain','cold'], mood:['tired','blue'], drink:[], why:'따뜻하지만 부담 없는 해장 겸 힐링'},
+  {name:'감바스 + 바게트', tags:['해산물','튀김'], weather:[], mood:['happy','calm'], drink:['wine'], why:'홈술 분위기 제대로 내는 안주 겸 식사'},
+  {name:'비빔국수', tags:['면','매운맛'], weather:['hot','humid'], mood:['stress','happy'], drink:['makgeolli'], why:'입맛 없을 때 확 당기는 매콤새콤'},
+  {name:'닭볶음탕', tags:['국물','매운맛','고기'], weather:['rain','cold'], mood:['stress','blue'], drink:['soju'], why:'진한 국물에 밥 비벼 먹는 맛'},
+  {name:'피자', tags:['튀김'], weather:[], mood:['happy','blue'], drink:['beer','wine'], why:'고민 없이 시켜서 편하게 즐기기'},
+  {name:'보쌈', tags:['고기'], weather:['cold','rain'], mood:['calm','tired'], drink:['makgeolli','soju'], why:'담백한 수육에 김치 한 점의 완성형 조합'},
+  {name:'우동', tags:['면','국물'], weather:['rain','cold'], mood:['blue','calm','tired'], drink:[], why:'따뜻한 국물이 조용히 위로해주는 맛'},
+  {name:'회 + 매운탕', tags:['해산물','국물','매운맛'], weather:[], mood:['happy','calm'], drink:['soju'], why:'신선한 회로 시작해 얼큰하게 마무리'},
+  {name:'제육볶음', tags:['고기','매운맛','밥'], weather:[], mood:['stress','tired'], drink:['soju','beer'], why:'밥도둑 앞에서는 고민이 사라진다'},
+  {name:'콩국수', tags:['면'], weather:['hot','humid'], mood:['calm','tired'], drink:[], why:'고소하고 시원하게 여름을 버티는 법'},
+];
+
+const DRINK_LABEL = {none:'', soju:'소주', beer:'맥주', makgeolli:'막걸리', wine:'와인·하이볼'};
+
+// ───────────────── 상태 ─────────────────
+const state = { mood:null, drink:'none', ex:new Set(), exCustom:new Set(), weather:null };
+
+// ───────────────── 날짜 ─────────────────
+const d = new Date();
+document.getElementById('dateChip').textContent =
+  `${d.getFullYear()}. ${d.getMonth()+1}. ${d.getDate()}. ${['일','월','화','수','목','금','토'][d.getDay()]}요일`;
+
+// ───────────────── 날씨 ─────────────────
+async function loadWeather(lat, lon, label) {
+  try {
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,precipitation,rain&timezone=auto`;
+    const res = await fetch(url);
+    const j = await res.json();
+    const c = j.current;
+    const raining = (c.precipitation ?? 0) > 0 || (c.rain ?? 0) > 0;
+    state.weather = {
+      temp: c.temperature_2m,
+      humi: c.relative_humidity_2m,
+      rain: raining,
+      hot: c.temperature_2m >= 26,
+      cold: c.temperature_2m <= 8,
+      humid: c.relative_humidity_2m >= 75,
+    };
+    document.getElementById('wTemp').textContent = `${Math.round(c.temperature_2m)}°`;
+    document.getElementById('wHumi').textContent = `${c.relative_humidity_2m}%`;
+    document.getElementById('wRain').textContent = raining ? '비 ☔' : '없음';
+    document.getElementById('locNote').textContent = `${label} 기준 현재 날씨`;
+  } catch(e) {
+    document.getElementById('locNote').textContent = '날씨를 불러오지 못했어요 · 날씨 반영 없이 추천됩니다';
+  }
+}
+function tryAutoLocation() {
+  if (navigator.geolocation && location.protocol !== 'file:') {
+    navigator.geolocation.getCurrentPosition(
+      p => loadWeather(p.coords.latitude, p.coords.longitude, '현재 위치'),
+      () => loadWeather(37.5665, 126.9780, '서울 (위치 권한 없음)'),
+      { timeout: 5000 }
+    );
+  } else {
+    // file://로 열면 위치 권한이 작동하지 않아 서울로 표시됩니다. 위 메뉴에서 도시를 선택하세요.
+    loadWeather(37.5665, 126.9780, '서울 · 도시를 선택할 수 있어요 →');
+  }
+}
+tryAutoLocation();
+
+document.getElementById('citySel').addEventListener('change', e => {
+  const v = e.target.value;
+  const label = e.target.options[e.target.selectedIndex].text;
+  if (v === 'auto') { tryAutoLocation(); return; }
+  const [lat, lon] = v.split(',').map(Number);
+  loadWeather(lat, lon, label);
+});
+
+// ───────────────── 칩 이벤트 ─────────────────
+document.getElementById('moodChips').addEventListener('click', e => {
+  const b = e.target.closest('.chip'); if (!b) return;
+  document.querySelectorAll('#moodChips .chip').forEach(c => c.classList.remove('on'));
+  b.classList.add('on');
+  state.mood = b.dataset.v;
+});
+document.getElementById('drinkChips').addEventListener('click', e => {
+  const b = e.target.closest('.chip'); if (!b) return;
+  document.querySelectorAll('#drinkChips .chip').forEach(c => c.classList.remove('on'));
+  b.classList.add('on');
+  state.drink = b.dataset.v;
+});
+document.getElementById('exChips').addEventListener('click', e => {
+  const b = e.target.closest('.chip'); if (!b) return;
+  b.classList.toggle('on');
+  b.classList.contains('on') ? state.ex.add(b.dataset.v) : state.ex.delete(b.dataset.v);
+});
+
+function addCustomEx() {
+  const inp = document.getElementById('exInput');
+  const v = inp.value.trim();
+  if (!v || state.exCustom.has(v)) { inp.value=''; return; }
+  state.exCustom.add(v);
+  const b = document.createElement('button');
+  b.className = 'chip ex on';
+  b.textContent = v;
+  b.onclick = () => { state.exCustom.delete(v); b.remove(); };
+  document.getElementById('exCustom').appendChild(b);
+  inp.value = '';
+}
+document.getElementById('exAdd').onclick = addCustomEx;
+document.getElementById('exInput').addEventListener('keydown', e => { if (e.key === 'Enter') addCustomEx(); });
+
+// ───────────────── 추천 로직 ─────────────────
+let lastPick = null;
+function recommend() {
+  let pool = MENUS.filter(m => {
+    if ([...state.ex].some(tag => m.tags.includes(tag))) return false;
+    if ([...state.exCustom].some(name =>
+      m.name.replace(/\s/g,'').includes(name.replace(/\s/g,'')))) return false;
+    return true;
+  });
+  if (pool.length === 0) return null;
+
+  const w = state.weather;
+  const scored = pool.map(m => {
+    let s = 1;
+    if (w) {
+      if (w.rain && m.weather.includes('rain')) s += 3;
+      if (w.hot && m.weather.includes('hot')) s += 3;
+      if (w.cold && m.weather.includes('cold')) s += 3;
+      if (w.humid && m.weather.includes('humid')) s += 1.5;
+      if (w.hot && m.weather.includes('cold')) s -= 2;
+      if (w.cold && m.weather.includes('hot')) s -= 2;
+    }
+    if (state.mood && m.mood.includes(state.mood)) s += 2.5;
+    if (state.drink !== 'none') {
+      if (m.drink.includes(state.drink)) s += 3;
+      else if (m.drink.length === 0) s -= 1;
+    }
+    if (lastPick && m.name === lastPick) s -= 5;
+    return { m, s: Math.max(s, 0.1) };
+  });
+
+  const total = scored.reduce((a,b) => a + b.s, 0);
+  let r = Math.random() * total;
+  for (const it of scored) { r -= it.s; if (r <= 0) return it.m; }
+  return scored[scored.length-1].m;
+}
+
+function reasonText(m) {
+  const parts = [];
+  const w = state.weather;
+  if (w) {
+    if (w.rain && m.weather.includes('rain')) parts.push('비 오는 날씨');
+    else if (w.hot && m.weather.includes('hot')) parts.push(`${Math.round(w.temp)}°의 더위`);
+    else if (w.cold && m.weather.includes('cold')) parts.push(`${Math.round(w.temp)}°의 쌀쌀함`);
+    else if (w.humid && m.weather.includes('humid')) parts.push('꿉꿉한 습도');
+  }
+  const moodMap = {happy:'신난 기분', tired:'피곤한 몸', stress:'쌓인 스트레스', blue:'울적한 마음', calm:'평온한 하루'};
+  if (state.mood && m.mood.includes(state.mood)) parts.push(moodMap[state.mood]);
+  const prefix = parts.length ? `${parts.join('과 ')}까지 고려했어요. ` : '';
+  return prefix + m.why + '!';
+}
+
+document.getElementById('drawBtn').addEventListener('click', () => {
+  const pick = recommend();
+  const ticket = document.getElementById('ticket');
+  const retry = document.getElementById('retryBtn');
+  if (!pick) {
+    document.getElementById('tMenu').textContent = '남는 메뉴가 없어요 🥲';
+    document.getElementById('tReason').textContent = '제외 조건이 너무 많아요. 하나만 풀어볼까요?';
+    document.getElementById('tPair').textContent = '';
+  } else {
+    lastPick = pick.name;
+    document.getElementById('tMenu').textContent = pick.name;
+    document.getElementById('tReason').textContent = reasonText(pick);
+    document.getElementById('tPair').textContent =
+      state.drink !== 'none'
+        ? (pick.drink.includes(state.drink) ? `${DRINK_LABEL[state.drink]}와 찰떡궁합 🍶` : `${DRINK_LABEL[state.drink]}와 함께해도 좋아요`)
+        : '';
+  }
+  ticket.classList.remove('show');
+  void ticket.offsetWidth;
+  ticket.classList.add('show');
+  retry.style.display = 'block';
+  retry.onclick = () => document.getElementById('drawBtn').click();
+  ticket.scrollIntoView({ behavior:'smooth', block:'center' });
+});
+</script>
+</body>
+</html>
